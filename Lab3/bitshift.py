@@ -1,45 +1,26 @@
 def bitshift(s, k, b):
     string = []
 
-    length = len(s)
-    print(length)
-
     for x in s:
         string.append(x)
-    print(string)
+
+    length = len(string)
+
+    if b == True:
+        for i in range(k):
+            x = string.pop(0)
+            string.insert(length - 1, x)
+        print("".join(string))
 
     if b == False:
         for i in range(k):
-            string[-k] = string[i]
-        print(string)
+            x = string.pop(-1)
+            string.insert(0, x)
+        print("".join(string))
 
 
-bitshift("101100", 1, False)
-
-bitshift("100001", 2, False)
-    # if b == True:
-    #     for i in range(length):
-    #         string[i], string[-k] = string[-k], string[-i]
-    #     print(string)
-
-
-
-
-
-
-
-    # for i in range(length):
-    #     string[i] = string[(i + k) % length]
-    # print(string)
-
-    # if (b == True):
-    #     for i in string:
-    #         newString.append(string[((i+int(k)) % length)])
-    #     return newString
-    # else:
-    #     for i in string:
-    #         newString[((i+int(k)) % length)] = string[i]
-    #     return newString
-
-
+bitshift("1000000", 1, True)
+bitshift("1000000", 2, False)
+bitshift("1000000", 3, False)
+bitshift("1000000", 4, False)
 
