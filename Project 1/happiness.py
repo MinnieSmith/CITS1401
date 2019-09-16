@@ -23,29 +23,31 @@ def open_file(filename):
             for j in range(1, l):
                 if countries[i][j]:
                     new_countries[i].append(float(countries[i][j]))
+                else:
+                    new_countries[i].append("")
 
-        print(new_countries)
         file.close()
         return new_countries
+
 
 def normalise(new_countries):
     l = len(new_countries[0])
     m = len(new_countries)
-    life_ladder = []
+
+    for j in range(1, l):
+        temp = []
+        for i in range(m):
+            if new_countries[i][j]:
+                temp.append(new_countries[i][j])
+        x = min(temp)
+        y = max(temp)
+
+        for i in range(m):
+            if new_countries[i][j]:
+                new_countries[i][j] = (new_countries[i][j] - x)/(y-x)
 
     for i in range(m):
-        life_ladder.append(new_countries[i][1])
-
-    x = min(life_ladder)
-    y = max(life_ladder)
-
-    for i in range(m):
-        new_countries[i][1] = (new_countries[i][1] - x)/(y-x)
-        print(new_countries[i][1])
-
-
-
-
+        print(new_countries[i])
 
     return
 
