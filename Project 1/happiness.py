@@ -75,9 +75,7 @@ def calculate_mean(new_countries):
         mean_countries.append([])
         mean_countries[i].insert(0, new_countries[i][0])
         temp = []
-        mean = 0
         n = 0
-        x = 0
         for j in range(1, l):
             if new_countries[i][j] != "":
                 temp.append(new_countries[i][j])
@@ -133,10 +131,10 @@ def calculate_harmonic_mean(new_countries):
     return harmonic_mean_countries
 
 
-def rank_list(list):
-    m = len(list)
-    list.sort(key=lambda x: x[1], reverse=True)
-    return list
+def rank_list(country_list):
+    m = len(country_list)
+    country_list.sort(key=lambda x: x[1], reverse=True)
+    return country_list
 
 
 def correlation_list(new_countries, metric_list):
@@ -158,6 +156,7 @@ def correlation_list(new_countries, metric_list):
     for i in range(m):
         ranked_life_ladder[i].insert(0, (i + 1))
 
+    # sort list alphabetically
     ranked_life_ladder.sort(key=lambda x: x[1], reverse=False)
 
     # calculate the rank for metric list
@@ -165,7 +164,8 @@ def correlation_list(new_countries, metric_list):
     for i in range(m):
         ranked_metric_list[i].insert(0, (i + 1))
 
-    ranked_metric_list.sort(key=lambda x: x[1], reverse=True)
+    # sort list alphabetically
+    ranked_metric_list.sort(key=lambda x: x[1], reverse=False)
 
     # calculate the difference
     for i in range(m):
@@ -173,7 +173,7 @@ def correlation_list(new_countries, metric_list):
         difference[i].insert(0, new_countries[i][0])
 
     for i in range(m):
-        d = abs(ranked_life_ladder[i][2] - ranked_metric_list[i][2])
+        d = abs(ranked_life_ladder[i][0] - ranked_metric_list[i][0])
         dsquared = d*d
         difference[i].append(dsquared)
 
@@ -185,7 +185,6 @@ def correlation_list(new_countries, metric_list):
 
     # calculate Spearman Rank Correlation
     p = 1 - ((6*sum_dsquared)/(m*((m*m)-1)))
-
     print(p)
     return p
 
@@ -195,44 +194,60 @@ def main():
     metric = input("Choose metric to be tested from: min, mean, median, harmonic_mean ")
     action = input("Choose action to be performed on data using specified metric from: list, correlation list ")
 
-    coutries = open_file(filename)
-    new_countries = normalise(coutries)
+    countries = open_file(filename)
+    new_countries = normalise(countries)
     m = len(new_countries)
 
     if metric.lower() == "min" and action.lower() == "list":
         country_list = rank_list(find_min(new_countries))
+        print("Ranked list of countries' happiness scores based on "
+              "the min metric: ")
         for i in range(m):
             print('{} {}'.format(country_list[i][0], country_list[i][1]))
         return
 
     elif metric.lower() == "min" and action.lower() == "correlation list":
+        print("The correlation coefficient between the study's ranking and "
+              "the ranking using the min metric is: ")
         return correlation_list(new_countries, find_min(new_countries))
 
     elif metric.lower() == "mean" and action.lower() == "list":
         country_list = rank_list(calculate_mean(new_countries))
+        print("Ranked list of countries' happiness scores based on "
+              "the mean metric: ")
         for i in range(m):
             print('{} {}'.format(country_list[i][0], country_list[i][1]))
         return
 
     elif metric.lower() == "mean" and action.lower() == "correlation list":
+        print("The correlation coefficient between the study's ranking and "
+              "the ranking using the mean metric is: ")
         return correlation_list(new_countries, calculate_mean(new_countries))
 
     elif metric.lower() == "median" and action.lower() == "list":
         country_list = rank_list(calculate_median(new_countries))
+        print("Ranked list of countries' happiness scores based on "
+              "the median metric: ")
         for i in range(m):
             print('{} {}'.format(country_list[i][0], country_list[i][1]))
         return
 
     elif metric.lower() == "median" and action.lower() == "correlation list":
+        print("The correlation coefficient between the study's ranking and "
+              "the ranking using the median metric is: ")
         return correlation_list(new_countries, calculate_median(new_countries))
 
     elif metric.lower() == "harmonic_mean" and action.lower() == "list":
         country_list = rank_list(calculate_harmonic_mean(new_countries))
+        print("Ranked list of countries' happiness scores based on "
+              "the harmonic_mean metric: ")
         for i in range(m):
             print('{} {}'.format(country_list[i][0], country_list[i][1]))
         return
 
     elif metric.lower() == "harmonic_mean" and action.lower() == "correlation list":
+        print("The correlation coefficient between the study's ranking and "
+              "the ranking using the harmonic_mean metric is: ")
         return correlation_list(new_countries, calculate_harmonic_mean(new_countries))
 
     else:
