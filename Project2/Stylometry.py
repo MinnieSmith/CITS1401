@@ -3,17 +3,13 @@ import math
 
 
 def open_file(filename):
-
-    # if file can't be opened
-    if not os.path.isfile(filename):
-        print("Unable to openfile")
-        return None
-
-    with open(filename, 'r') as file:
+    try:
+        with open(filename, 'r') as file:
             text = file.read()
-
-    file.close()
-    return text
+        return text
+    except IOError:
+        print("Cannot open file {0:s}".format(filename))
+        return None
 
 
 def text_punctuation(filename):
@@ -147,32 +143,31 @@ def calculate_distance(profile1, profile2):
 
 
 def main(textfile1, textfile2, feature):
-    if feature == "unigrams":
-        profile1 = text_unigrams(textfile1)
-        profile2 = text_unigrams(textfile2)
-        distance = calculate_distance(profile1, profile2)
-        return distance, profile1, profile2
+        if feature.lower() == "unigrams":
+            profile1 = text_unigrams(textfile1)
+            profile2 = text_unigrams(textfile2)
+            distance = calculate_distance(profile1, profile2)
+            return distance, profile1, profile2
 
-    elif feature == "punctuation":
-        profile1 = text_punctuation(textfile1)
-        profile2 = text_punctuation(textfile2)
-        distance = calculate_distance(profile1, profile2)
-        return distance, profile1, profile2
+        elif feature.lower() == "punctuation":
+            profile1 = text_punctuation(textfile1)
+            profile2 = text_punctuation(textfile2)
+            distance = calculate_distance(profile1, profile2)
+            return distance, profile1, profile2
 
-    elif feature == "conjunctions":
-        profile1 = text_conjunctions(textfile1)
-        profile2 = text_conjunctions(textfile2)
-        distance = calculate_distance(profile1, profile2)
-        return distance, profile1, profile2
+        elif feature.lower() == "conjunctions":
+            profile1 = text_conjunctions(textfile1)
+            profile2 = text_conjunctions(textfile2)
+            distance = calculate_distance(profile1, profile2)
+            return distance, profile1, profile2
 
-    elif feature == "composite":
-        profile1 = text_composite(textfile1)
-        profile2 = text_composite(textfile2)
-        distance = calculate_distance(profile1, profile2)
-        return distance, profile1, profile2
-    else:
-        print("The argument does not contain correct parameters ")
+        elif feature.lower() == "composite":
+            profile1 = text_composite(textfile1)
+            profile2 = text_composite(textfile2)
+            distance = calculate_distance(profile1, profile2)
+            return distance, profile1, profile2
+        else:
+            print("Invalid input. Cannot proceed")
+            return None
 
-
-main("sample1.txt", "sample2.txt", "composite")
 
